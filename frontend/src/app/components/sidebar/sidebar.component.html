@@ -1,0 +1,37 @@
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-row">
+      <input
+        class="input"
+        type="text"
+        placeholder="Search notes..."
+        [ngModel]="query()"
+        (ngModelChange)="query.set($event)">
+      <button class="btn btn-primary" title="New note" (click)="onNew()">➕</button>
+    </div>
+    <div class="tags-row" aria-label="Tags">
+      <span *ngFor="let t of allTags()" class="tag-chip" [class.active]="tagFilter()===t" (click)="selectTag(t)">{{ t }}</span>
+    </div>
+    <div style="margin-top:10px; display:flex; gap:8px;">
+      <select class="select" [ngModel]="sortBy()" (ngModelChange)="sortBy.set($event)">
+        <option value="updatedAt">Sort: Updated</option>
+        <option value="title">Sort: Title</option>
+      </select>
+    </div>
+  </div>
+  <div class="notes-list" role="list">
+    <a *ngFor="let n of filtered(); trackBy: trackById"
+       [routerLink]="['/notes', n.id]"
+       routerLinkActive="active"
+       class="note-item" role="listitem">
+      <div>
+        <div class="note-title">{{ n.title || 'Untitled' }}</div>
+        <div class="note-snippet">{{ n.content | slice:0:120 }}</div>
+      </div>
+      <div class="note-meta">
+        <span class="pin" [class.active]="n.pinned" (click)="togglePin(n, $event)" title="Pin/Unpin">📌</span>
+        <span style="font-size:12px; color:#6b7280">{{ n.updatedAt | date:'short' }}</span>
+      </div>
+    </a>
+  </div>
+</div>

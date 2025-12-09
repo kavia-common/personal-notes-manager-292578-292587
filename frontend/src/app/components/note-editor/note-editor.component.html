@@ -1,0 +1,31 @@
+<div class="editor-header">
+  <input class="title-input" placeholder="Note title..."
+         [ngModel]="title()"
+         (ngModelChange)="onTitleChange($event)">
+  <div style="display:flex; gap:8px; align-items:center;">
+    <button class="btn" [class.btn-primary]="pinned()" title="Pin"
+            (click)="togglePinned()">📌 {{ pinned() ? 'Pinned' : 'Pin' }}</button>
+    <button class="btn" (click)="formatAsMarkdown()">📝 Markdown</button>
+    <button class="btn btn-danger" (click)="deleteNote()" title="Delete (Del)">🗑️ Delete</button>
+  </div>
+</div>
+
+<div class="editor-body">
+  <textarea class="textarea" placeholder="Write your note here (Markdown supported in future)..."
+            [ngModel]="content()"
+            (ngModelChange)="onContentChange($event)"></textarea>
+
+  <div class="tags-input">
+    <div class="tag-pill" *ngFor="let t of tags()">
+      {{ t }}
+      <button class="tag-remove" (click)="removeTag(t)" title="Remove">×</button>
+    </div>
+    <input class="input tag-input-field" placeholder="Add tag and press Enter"
+           (keydown.enter)="addTagFromKeyEvent($event)">
+  </div>
+</div>
+
+<div class="editor-footer">
+  <div>Last saved: {{ lastSaved() ? (lastSaved() | date:'short') : '—' }}</div>
+  <div>Shortcuts: Ctrl/Cmd+S Save • Ctrl/Cmd+N New • Delete Remove</div>
+</div>
